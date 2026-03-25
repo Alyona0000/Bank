@@ -7,7 +7,7 @@ typedef struct {
     double interest;
 } Credit;
 
-// дохід з кредиту(відсоток)
+
 double credit_income(Credit c) {
     return c.amount * c.interest;
 }

@@ -6,7 +6,7 @@
 int main() {
 
     Bank bank;
-    bank.starting_capital = 10000;
+    bank.starting_capital = 2000;
     bank.dep_count = 0;
     bank.cred_count = 0;
 

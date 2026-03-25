@@ -7,7 +7,7 @@ typedef struct {
     double interest;
 } Deposit;
 
-// дохід з депозиту(відсоток)
+// дохід з депозиту  ----------- c.amount — сума кредиту,  c.interest — ставка --- (відсоток)
 double deposit_income(Deposit d) {
     return d.amount * d.interest;
 }
