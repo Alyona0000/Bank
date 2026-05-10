@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<title>Violet Bank</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#f5ecff,#e9d5ff,#ddd6fe);
+    color:#2e1065;
+}
+
+header{
+    width:90%;
+    margin:20px auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:30px;
+    font-weight:bold;
+    color:#6d28d9;
+}
+
+nav a{
+    margin:0 15px;
+    text-decoration:none;
+    color:#4c1d95;
+    font-weight:bold;
+}
+
+.btn{
+    border:none;
+    padding:12px 22px;
+    border-radius:25px;
+    background:#a855f7;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.btn:hover{
+    background:#7e22ce;
+}
+
+.hero{
+    width:90%;
+    margin:20px auto;
+    background:linear-gradient(120deg,#c084fc,#a78bfa,#ddd6fe);
+    border-radius:30px;
+    padding:45px;
+    position:relative;
+    min-height:250px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.15);
+}
+
+.hero h1{
+    font-size:54px;
+    margin:0;
+    color:white;
+}
+
+.hero p{
+    width:55%;
+    color:white;
+    font-size:18px;
+}
+
+.money-cat{
+    position:absolute;
+    right:40px;
+    bottom:20px;
+    font-size:110px;
+}
+
+.container{
+    width:90%;
+    margin:30px auto;
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:25px;
+}
+
+.card{
+    background:white;
+    border-radius:28px;
+    padding:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.12);
+}
+
+.card h2{
+    margin-top:0;
+    color:#5b21b6;
+}
+
+.stat{
+    background:#f5f3ff;
+    border-radius:18px;
+    padding:18px;
+    margin:12px 0;
+    display:flex;
+    justify-content:space-between;
+    font-weight:bold;
+}
+
+.actions button{
+    width:100%;
+    margin:10px 0;
+    padding:15px;
+    border:none;
+    border-radius:18px;
+    background:#9333ea;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.actions button:hover{
+    background:#6b21a8;
+}
+
+input{
+    width:100%;
+    margin:8px 0;
+    padding:12px;
+    border-radius:14px;
+    border:none;
+    background:#f3e8ff;
+    font-size:15px;
+}
+
+.operation{
+    display:flex;
+    gap:15px;
+    background:#faf5ff;
+    border-radius:18px;
+    padding:15px;
+    margin:12px 0;
+}
+
+.icon{
+    width:50px;
+    height:50px;
+    border-radius:16px;
+    background:#c084fc;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+}
+
+.log{
+    background:#2e1065;
+    color:#e9d5ff;
+    border-radius:20px;
+    padding:20px;
+    height:260px;
+    overflow-y:auto;
+    font-family:monospace;
+    white-space:pre-line;
+}
+
+footer{
+    text-align:center;
+    padding:25px;
+    color:#6b21a8;
+}
+
+/* LOGIN WINDOW */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+}
+
+.modal-content{
+    width:350px;
+    background:white;
+    border-radius:28px;
+    padding:35px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.25);
+    animation:appear 0.3s ease;
+}
+
+.modal-content h2{
+    margin-top:0;
+    color:#6b21a8;
+}
+
+.modal-content button{
+    width:100%;
+    margin-top:15px;
+    padding:14px;
+    border:none;
+    border-radius:16px;
+    background:#9333ea;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.modal-content button:hover{
+    background:#6b21a8;
+}
+
+#loginStatus{
+    margin-top:12px;
+    font-weight:bold;
+    color:#7e22ce;
+}
+
+@keyframes appear{
+    from{
+        transform:scale(0.8);
+        opacity:0;
+    }
+
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <h2>🔐 Log in</h2>
+
+        <input type="text" id="loginName" placeholder="Username">
+        <input type="password" id="loginPassword" placeholder="Password">
+
+        <button onclick="loginUser()">Enter Bank</button>
+
+        <p id="loginStatus"></p>
+    </div>
+</div>
+
+<header>
+    <div class="logo">Violet Bank</div>
+
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Deposits</a>
+        <a href="#">Credits</a>
+        <a href="#">Stocks</a>
+    </nav>
+
+    <button class="btn" onclick="openLogin()">Log in</button>
+</header>
+
+<section class="hero">
+    <h1>Bank Simulation</h1>
+
+    <p>
+        Симуляція роботи банку: депозити, кредити, цінні папери,
+        прибуток і щоденні операції.
+    </p>
+
+    <button class="btn" onclick="simulateDay()">Simulate Day</button>
+
+    <div class="money-cat">💸🐱</div>
+</section>
+
+<div class="container">
+
+    <div class="card">
+        <h2>Стан банку</h2>
+
+        <div class="stat">
+            <span>Капітал</span>
+            <span id="capital">100000</span>
+        </div>
+
+        <div class="stat">
+            <span>Депозити</span>
+            <span id="deposits">0</span>
+        </div>
+
+        <div class="stat">
+            <span>Кредити</span>
+            <span id="credits">0</span>
+        </div>
+
+        <div class="stat">
+            <span>Акції</span>
+            <span id="stocks">10</span>
+        </div>
+    </div>
+
+    <div class="card actions">
+        <h2>Операції</h2>
+
+        <input type="number" id="amountInput" placeholder="Введіть суму">
+
+        <button onclick="addDeposit()">💰 Відкрити депозит</button>
+        <button onclick="giveCredit()">💳 Видати кредит</button>
+        <button onclick="buyStock()">📈 Купити акції</button>
+        <button onclick="sellStock()">📉 Продати акції</button>
+        <button onclick="simulateDay()">🏦 Новий день</button>
+    </div>
+
+    <div class="card">
+        <h2>Послуги</h2>
+
+        <div class="operation">
+            <div class="icon">💰</div>
+            <div>
+                <b>Deposit</b><br>
+                Клієнт приносить гроші банку.
+            </div>
+        </div>
+
+        <div class="operation">
+            <div class="icon">💳</div>
+            <div>
+                <b>Credit</b><br>
+                Банк видає гроші під відсоток.
+            </div>
+        </div>
+
+        <div class="operation">
+            <div class="icon">📈</div>
+            <div>
+                <b>Stocks</b><br>
+                Банк купує та продає цінні папери.
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="container" style="grid-template-columns:1fr;">
+    <div class="card">
+        <h2>Журнал роботи банку</h2>
+        <div class="log" id="log">Банк відкрився. Чекаємо клієнтів...</div>
+    </div>
+</div>
+
+<footer>
+    Bank Simulation Project
+</footer>
+
+<script>
+let capital = 100000;
+let deposits = 0;
+let credits = 0;
+let stocks = 10;
+let stockPrice = 150;
+let day = 1;
+
+function update() {
+    document.getElementById("capital").innerText =
+        capital.toFixed(2) + " ₴";
+
+    document.getElementById("deposits").innerText =
+        deposits.toFixed(2) + " ₴";
+
+    document.getElementById("credits").innerText =
+        credits.toFixed(2) + " ₴";
+
+    document.getElementById("stocks").innerText =
+        stocks + " шт.";
+}
+
+function log(text) {
+    let logBox = document.getElementById("log");
+    logBox.innerText += "\n" + text;
+    logBox.scrollTop = logBox.scrollHeight;
+}
+
+function getInputAmount() {
+    let value = parseFloat(document.getElementById("amountInput").value);
+
+    if (isNaN(value) || value <= 0) {
+        return null;
+    }
+
+    return value;
+}
+
+function addDeposit() {
+    let amount = getInputAmount();
+
+    if (amount === null) {
+        log("❌ Введіть коректну суму депозиту.");
+        return;
+    }
+
+    deposits += amount;
+    capital += amount;
+
+    log("💰 Клієнт відкрив депозит на " +
+        amount.toFixed(2) + " ₴");
+
+    update();
+}
+
+function giveCredit() {
+    let amount = getInputAmount();
+
+    if (amount === null) {
+        log("❌ Введіть коректну суму кредиту.");
+        return;
+    }
+
+    if (capital >= amount) {
+        credits += amount;
+        capital -= amount;
+
+        log("💳 Банк видав кредит на " +
+            amount.toFixed(2) + " ₴");
+    } else {
+        log("❌ Недостатньо грошей у банку.");
+    }
+
+    update();
+}
+
+function buyStock() {
+    let count = Math.floor(Math.random() * 5) + 1;
+    let cost = count * stockPrice;
+
+    if (capital >= cost) {
+        capital -= cost;
+        stocks += count;
+
+        log("📈 Куплено " +
+            count + " акцій за " +
+            cost.toFixed(2) + " ₴");
+    } else {
+        log("❌ Недостатньо грошей для купівлі акцій.");
+    }
+
+    update();
+}
+
+function sellStock() {
+    let count = Math.floor(Math.random() * 3) + 1;
+
+    if (stocks >= count) {
+        let income = count * stockPrice;
+
+        stocks -= count;
+        capital += income;
+
+        log("📉 Продано " +
+            count + " акцій за " +
+            income.toFixed(2) + " ₴");
+    } else {
+        log("❌ Немає достатньо акцій.");
+    }
+
+    update();
+}
+
+function simulateDay() {
+    day++;
+
+    let creditProfit = credits * 0.18 / 365;
+    let depositCost = deposits * 0.08 / 365;
+
+    stockPrice *= 1 + ((Math.random() * 0.05) - 0.015);
+
+    capital = capital + creditProfit - depositCost;
+
+    log("🏦 День " + day +
+        "\n+ Прибуток кредитів: " + creditProfit.toFixed(2) + " ₴" +
+        "\n- Витрати депозитів: " + depositCost.toFixed(2) + " ₴" +
+        "\n📈 Ціна акцій: " + stockPrice.toFixed(2) + " ₴");
+
+    update();
+}
+
+function openLogin() {
+    document.getElementById("loginModal").style.display = "flex";
+}
+
+function closeLogin() {
+    document.getElementById("loginModal").style.display = "none";
+}
+
+function loginUser() {
+    let username = document.getElementById("loginName").value;
+    let password = document.getElementById("loginPassword").value;
+
+    if (username === "admin" && password === "1234") {
+        document.getElementById("loginStatus").innerText =
+            "✅ Login successful";
+
+        log("🔐 Адміністратор увійшов у систему.");
+
+        setTimeout(function() {
+            closeLogin();
+        }, 1000);
+    } else {
+        document.getElementById("loginStatus").innerText =
+            "❌ Wrong username or password";
+
+        log("⚠️ Невдала спроба входу.");
+    }
+}
+
+window.onclick = function(event) {
+    let modal = document.getElementById("loginModal");
+
+    if (event.target === modal) {
+        closeLogin();
+    }
+}
+
+update();
+</script>
+
+</body>
+</html>

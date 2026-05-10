@@ -1,29 +1,26 @@
+#include "Deposit.h"
 #include <stdio.h>
 
-class Deposit {
-private:
-    int date_issue;
-    int return_date;
-    double amount;
-    double interest;
+Deposit::Deposit(int userId, int startDay, int endDay,
+                 double amount, double interest) {
+    this->userId = userId;
+    this->startDay = startDay;
+    this->endDay = endDay;
+    this->amount = amount;
+    this->interest = interest;
+}
 
-public:
-    Deposit(int di = 0, int rd = 0, double a = 0, double i = 0) {
-        date_issue = di;
-        return_date = rd;
-        amount = a;
-        interest = i;
-    }
+int Deposit::getUserId() const { return userId; }
+int Deposit::getStartDay() const { return startDay; }
+int Deposit::getEndDay() const { return endDay; }
+double Deposit::getAmount() const { return amount; }
+double Deposit::getInterest() const { return interest; }
 
-    double income() const {
-        return amount * interest;
-    }
+double Deposit::dailyCost() const {
+    return amount * interest / 365.0;
+}
 
-    double getAmount() const {
-        return amount;
-    }
-
-    void show() const {
-        printf("Deposit: %.2f, interest = %.2f\n", amount, interest);
-    }
-};
+void Deposit::show() const {
+    printf("Deposit | User: %d | Amount: %.2f | Interest: %.2f | Days: %d-%d\n",
+           userId, amount, interest, startDay, endDay);
+}
