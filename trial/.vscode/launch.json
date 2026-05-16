@@ -1,0 +1,32 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug main.exe",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}\\main.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                {
+                    "name": "PATH",
+                    "value": "C:\\msys64\\bin;C:\\msys64\\usr\\bin;C:\\msys64\\x86_64-w64-mingw32\\bin;C:\\msys64\\x86_64-w64-mingw32\\lib\\gcc\\x86_64-w64-mingw32\\15.2.0;${env:PATH}"
+                }
+            ],
+            "externalConsole": true,
+            "internalConsoleOptions": "openOnSessionStart",
+            "preLaunchTask": "Build main.exe",
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:\\msys64\\bin\\gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build main.exe",
+            "type": "shell",
+            "command": "C:\\msys64\\bin\\g++.exe",
+            "args": [
+                "-g",
+                "-static-libstdc++",
+                "-static-libgcc",
+                "${workspaceFolder}\\main.cpp",
+                "-o",
+                "${workspaceFolder}\\main.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
