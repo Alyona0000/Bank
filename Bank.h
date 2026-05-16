@@ -2,9 +2,10 @@
 #define BANK_H
 
 #include <vector>
-#include <fstream>
-#include <stdio.h>
-#include <stdlib.h>
+#include <string>
+#include <sstream>
+#include <cstdlib>
+
 #include "Deposit.h"
 #include "Credit.h"
 #include "Security.h"
@@ -29,6 +30,8 @@ private:
     T depositCosts;
     T securityProfit;
 
+    int currentDay;
+
 public:
     Bank(T capital = 0) {
         this->capital = capital;
@@ -39,6 +42,8 @@ public:
         creditProfit = 0;
         depositCosts = 0;
         securityProfit = 0;
+
+        currentDay = 1;
     }
 
     void addUser(const User& user) {
@@ -57,128 +62,101 @@ public:
         securities.push_back(security);
     }
 
-    void simulateDay(int day) {
-        T D = 0;
-        T K = 0;
+    void addManualDeposit(T amount) {
+        if (amount <= 0) return;
+
+        deposits.push_back(Deposit(1, currentDay, currentDay + 365, amount, 0.08));
+
+        capital += amount;
+        totalDeposits += amount;
+    }
+
+    void giveManualCredit(T amount) {
+        if (amount <= 0) return;
+
+        if (capital >= amount) {
+            credits.push_back(Credit(1, currentDay, currentDay + 365, amount, 0.18));
+
+            capital -= amount;
+            totalCredits += amount;
+        }
+    }
+
+    void buyRandomSecurity() {
+        if (securities.empty()) return;
+
+        int index = rand() % securities.size();
+        int count = rand() % 5 + 1;
+
+        T cost = securities[index].getPrice() * count;
+
+        if (capital >= cost) {
+            securities[index].buy(count);
+            capital -= cost;
+        }
+    }
+
+    void sellRandomSecurity() {
+        if (securities.empty()) return;
+
+        int index = rand() % securities.size();
+        int count = rand() % 3 + 1;
+
+        T income = securities[index].sell(count);
+
+        capital += income;
+        securityProfit += income;
+    }
+
+    void simulateNextDay() {
+        currentDay++;
+
         T KP = 0;
         T DP = 0;
-        T SP = 0;
 
         for (size_t i = 0; i < deposits.size(); i++) {
-            if (deposits[i].getStartDay() == day) {
-                D += deposits[i].getAmount();
-            }
-
-            if (day >= deposits[i].getStartDay() &&
-                day <= deposits[i].getEndDay()) {
+            if (currentDay >= deposits[i].getStartDay() &&
+                currentDay <= deposits[i].getEndDay()) {
                 DP += deposits[i].dailyCost();
             }
         }
 
         for (size_t i = 0; i < credits.size(); i++) {
-            if (credits[i].getStartDay() == day) {
-                K += credits[i].getAmount();
-            }
-
-            if (day >= credits[i].getStartDay() &&
-                day <= credits[i].getEndDay()) {
+            if (currentDay >= credits[i].getStartDay() &&
+                currentDay <= credits[i].getEndDay()) {
                 KP += credits[i].dailyProfit();
             }
         }
 
         for (size_t i = 0; i < securities.size(); i++) {
             securities[i].updatePrice();
-
-            int action = rand() % 3;
-
-            if (action == 0) {
-                int count = rand() % 3 + 1;
-                T cost = securities[i].buy(count);
-
-                if (capital >= cost) {
-                    capital -= cost;
-                }
-            } else if (action == 1) {
-                int count = rand() % 3 + 1;
-                T income = securities[i].sell(count);
-                capital += income;
-                SP += income;
-            }
         }
 
-        capital = capital + D - K + KP - DP;
+        capital = capital + KP - DP;
 
-        totalDeposits += D;
-        totalCredits += K;
         creditProfit += KP;
         depositCosts += DP;
-        securityProfit += SP;
-    }
-
-    void simulatePeriod(int days) {
-        ofstream file("bank_result.csv");
-
-        file << "day,capital,total_deposits,total_credits,credit_profit,deposit_costs,security_profit\n";
-
-        for (int day = 1; day <= days; day++) {
-            simulateDay(day);
-
-            file << day << ","
-                 << capital << ","
-                 << totalDeposits << ","
-                 << totalCredits << ","
-                 << creditProfit << ","
-                 << depositCosts << ","
-                 << securityProfit << "\n";
-
-            if (day % 30 == 0) {
-                printf("\n--- Day %d ---\n", day);
-                showState();
-            }
-        }
-
-        file.close();
     }
 
     T profit() const {
         return capital - startCapital;
     }
 
-    void showState() const {
-        printf("Bank capital: %.2f\n", (double)capital);
-        printf("Total deposits received: %.2f\n", (double)totalDeposits);
-        printf("Total credits issued: %.2f\n", (double)totalCredits);
-        printf("Credit profit: %.2f\n", (double)creditProfit);
-        printf("Deposit costs: %.2f\n", (double)depositCosts);
-        printf("Security operations income: %.2f\n", (double)securityProfit);
-        printf("Current profit: %.2f\n", (double)profit());
+    string toJson() const {
+        stringstream ss;
 
-        printf("\nSecurities:\n");
-        for (size_t i = 0; i < securities.size(); i++) {
-            securities[i].show();
-        }
-    }
+        ss << "{";
+        ss << "\"capital\":" << capital << ",";
+        ss << "\"totalDeposits\":" << totalDeposits << ",";
+        ss << "\"totalCredits\":" << totalCredits << ",";
+        ss << "\"creditProfit\":" << creditProfit << ",";
+        ss << "\"depositCosts\":" << depositCosts << ",";
+        ss << "\"securityProfit\":" << securityProfit << ",";
+        ss << "\"profit\":" << profit() << ",";
+        ss << "\"day\":" << currentDay;
+        ss << "}";
 
-    void showAllData() const {
-        printf("\n===== USERS =====\n");
-        for (size_t i = 0; i < users.size(); i++) {
-            users[i].show();
-        }
-
-        printf("\n===== DEPOSITS =====\n");
-        for (size_t i = 0; i < deposits.size(); i++) {
-            deposits[i].show();
-        }
-
-        printf("\n===== CREDITS =====\n");
-        for (size_t i = 0; i < credits.size(); i++) {
-            credits[i].show();
-        }
-
-        printf("\n===== SECURITIES =====\n");
-        for (size_t i = 0; i < securities.size(); i++) {
-            securities[i].show();
-        }
+        return ss.str();
     }
 };
 
