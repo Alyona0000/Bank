@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+using namespace std;
+
 Security::Security(string name, string type, double price,
                    int quantity, double yearlyGrowth) {
     this->name = name;
@@ -11,10 +13,21 @@ Security::Security(string name, string type, double price,
     this->yearlyGrowth = yearlyGrowth;
 }
 
-string Security::getName() const { return name; }
-string Security::getType() const { return type; }
-double Security::getPrice() const { return price; }
-int Security::getQuantity() const { return quantity; }
+string Security::getName() const {
+    return name;
+}
+
+string Security::getType() const {
+    return type;
+}
+
+double Security::getPrice() const {
+    return price;
+}
+
+int Security::getQuantity() const {
+    return quantity;
+}
 
 void Security::updatePrice() {
     double randomChange = (rand() % 21 - 10) / 100.0;
@@ -46,6 +59,12 @@ double Security::totalValue() const {
 }
 
 void Security::show() const {
-    printf("Security | %s | Type: %s | Price: %.2f | Quantity: %d | Value: %.2f\n",
-           name.c_str(), type.c_str(), price, quantity, totalValue());
+    printf(
+        "Security | %s | Type: %s | Price: %.2f | Quantity: %d | Value: %.2f\n",
+        name.c_str(),
+        type.c_str(),
+        price,
+        quantity,
+        totalValue()
+    );
 }

@@ -72,3 +72,9 @@ capital = capital + creditProfit - depositCost
 
 змінити валюту банку на віскаси курс віскасів зінився 
 спочатку цсв
+CSS — внешний вид
+HTML — структура сайта
+JavaScript — логика сайта
+
+
+

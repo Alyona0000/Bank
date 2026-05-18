@@ -10,17 +10,31 @@ Credit::Credit(int userId, int startDay, int endDay,
     this->interest = interest;
 }
 
-int Credit::getUserId() const { return userId; }
-int Credit::getStartDay() const { return startDay; }
-int Credit::getEndDay() const { return endDay; }
-double Credit::getAmount() const { return amount; }
-double Credit::getInterest() const { return interest; }
+int Credit::getUserId() const {
+    return userId;
+}
+
+int Credit::getStartDay() const {
+    return startDay;
+}
+
+int Credit::getEndDay() const {
+    return endDay;
+}
+
+double Credit::getAmount() const {
+    return amount;
+}
+
+double Credit::getInterest() const {
+    return interest;
+}
 
 double Credit::dailyProfit() const {
     return amount * interest / 365.0;
 }
 
 void Credit::show() const {
-    printf("Credit  | User: %d | Amount: %.2f | Interest: %.2f | Days: %d-%d\n",
+    printf("Credit | User: %d | Amount: %.2f | Interest: %.2f | Days: %d-%d\n",
            userId, amount, interest, startDay, endDay);
 }

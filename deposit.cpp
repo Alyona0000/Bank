@@ -10,11 +10,25 @@ Deposit::Deposit(int userId, int startDay, int endDay,
     this->interest = interest;
 }
 
-int Deposit::getUserId() const { return userId; }
-int Deposit::getStartDay() const { return startDay; }
-int Deposit::getEndDay() const { return endDay; }
-double Deposit::getAmount() const { return amount; }
-double Deposit::getInterest() const { return interest; }
+int Deposit::getUserId() const {
+    return userId;
+}
+
+int Deposit::getStartDay() const {
+    return startDay;
+}
+
+int Deposit::getEndDay() const {
+    return endDay;
+}
+
+double Deposit::getAmount() const {
+    return amount;
+}
+
+double Deposit::getInterest() const {
+    return interest;
+}
 
 double Deposit::dailyCost() const {
     return amount * interest / 365.0;

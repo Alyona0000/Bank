@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<title>Violet Bank</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:linear-gradient(135deg,#f5ecff,#e9d5ff,#ddd6fe);
+    color:#2e1065;
+}
+
+header{
+    width:90%;
+    margin:20px auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:30px;
+    font-weight:bold;
+    color:#6d28d9;
+}
+
+nav a{
+    margin:0 15px;
+    text-decoration:none;
+    color:#4c1d95;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.btn{
+    border:none;
+    padding:12px 22px;
+    border-radius:25px;
+    background:#a855f7;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.btn:hover{
+    background:#7e22ce;
+}
+
+.hero{
+    width:90%;
+    margin:20px auto;
+    background:linear-gradient(120deg,#c084fc,#a78bfa,#ddd6fe);
+    border-radius:30px;
+    padding:45px;
+    position:relative;
+    min-height:310px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.15);
+    overflow:hidden;
+}
+
+.hero h1{
+    font-size:54px;
+    margin:0;
+    color:white;
+}
+
+.hero > p{
+    width:55%;
+    color:white;
+    font-size:18px;
+}
+
+.money-cat{
+    position:absolute;
+    right:40px;
+    bottom:20px;
+    font-size:110px;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:15px;
+    align-items:center;
+}
+
+.info-btn{
+    border:none;
+    padding:12px 22px;
+    border-radius:25px;
+    background:white;
+    color:#6b21a8;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.info-btn:hover{
+    background:#f3e8ff;
+}
+
+.author-panel{
+    position:absolute;
+    top:35px;
+    right:-500px;
+    width:420px;
+    max-height:520px;
+    overflow-y:auto;
+    background:white;
+    border-radius:28px;
+    padding:26px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.2);
+    transition:0.5s;
+    opacity:0;
+    color:#4c1d95;
+    z-index:5;
+}
+
+.author-panel.active{
+    right:40px;
+    opacity:1;
+}
+
+.author-panel h2{
+    margin-top:0;
+    color:#6d28d9;
+    font-size:24px;
+}
+
+.author-panel p{
+    margin:10px 0;
+    line-height:1.5;
+    color:#4c1d95;
+    font-size:16px;
+    font-weight:normal;
+    width:100%;
+}
+
+.author-panel b{
+    color:#5b21b6;
+    font-size:17px;
+}
+
+.container{
+    width:90%;
+    margin:30px auto;
+    display:grid;
+    grid-template-columns:1fr 2fr;
+    gap:25px;
+}
+
+.card{
+    background:white;
+    border-radius:28px;
+    padding:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.12);
+}
+
+.card h2{
+    margin-top:0;
+    color:#5b21b6;
+}
+
+.stat{
+    background:#f5f3ff;
+    border-radius:18px;
+    padding:18px;
+    margin:12px 0;
+    display:flex;
+    justify-content:space-between;
+    font-weight:bold;
+}
+
+.actions button{
+    width:100%;
+    margin:10px 0;
+    padding:15px;
+    border:none;
+    border-radius:18px;
+    background:#9333ea;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.actions button:hover{
+    background:#6b21a8;
+}
+
+input{
+    width:100%;
+    margin:8px 0;
+    padding:12px;
+    border-radius:14px;
+    border:none;
+    background:#f3e8ff;
+    font-size:15px;
+}
+
+.operation{
+    display:flex;
+    gap:15px;
+    background:#faf5ff;
+    border-radius:18px;
+    padding:15px;
+    margin:12px 0;
+}
+
+.log{
+    background:#2e1065;
+    color:#e9d5ff;
+    border-radius:20px;
+    padding:20px;
+    height:260px;
+    overflow-y:auto;
+    font-family:monospace;
+    white-space:pre-line;
+}
+
+footer{
+    text-align:center;
+    padding:25px;
+    color:#6b21a8;
+}
+
+.formula-card{
+    min-height:520px;
+}
+
+.cat-box{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    margin-bottom:20px;
+}
+
+.cat{
+    width:90px;
+    height:90px;
+    border-radius:28px;
+    background:linear-gradient(135deg,#e9d5ff,#c084fc);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:55px;
+    box-shadow:0 10px 25px rgba(107,33,168,0.25);
+}
+
+.cat-box p{
+    margin:5px 0 0 0;
+    color:#6b21a8;
+    font-weight:bold;
+}
+
+.formula{
+    background:#f5f3ff;
+    border-left:6px solid #9333ea;
+    padding:16px;
+    margin:14px 0;
+    border-radius:16px;
+    font-size:17px;
+    line-height:1.5;
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+}
+
+.modal-content{
+    width:360px;
+    background:white;
+    border-radius:28px;
+    padding:35px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.25);
+}
+
+.modal-content h2{
+    margin-top:0;
+    color:#6b21a8;
+}
+
+.modal-content button{
+    width:100%;
+    margin-top:12px;
+    padding:14px;
+    border:none;
+    border-radius:16px;
+    background:#9333ea;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+#loginStatus{
+    margin-top:12px;
+    font-weight:bold;
+    color:#7e22ce;
+}
+</style>
+</head>
+
+<body>
+
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <h2>🔐 Bank Account</h2>
+
+        <input type="text" id="loginName" placeholder="Username">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <input type="text" id="verifyCode" placeholder="Verification code">
+
+        <button onclick="registerUser()">Register</button>
+        <button onclick="loginUser()">Log in</button>
+
+        <p id="loginStatus"></p>
+    </div>
+</div>
+
+<header>
+    <div class="logo">Violet Bank</div>
+
+    <nav>
+        <a onclick="showSection('home')">Home</a>
+        <a onclick="showSection('deposits')">Deposits</a>
+        <a onclick="showSection('credits')">Credits</a>
+        <a onclick="showSection('stocks')">Stocks</a>
+    </nav>
+
+    <button class="btn" onclick="openLogin()">Log in</button>
+</header>
+
+<section class="hero">
+    <h1>Bank Simulation</h1>
+
+    <p>
+        Симуляція роботи банку: депозити, кредити,
+        цінні папери, прибуток і щоденні операції.
+    </p>
+
+    <div class="hero-buttons">
+        <button class="btn" onclick="simulateDay()">Simulate Day</button>
+
+        <button class="info-btn" onclick="toggleAuthorInfo()">
+            📘 About Project
+        </button>
+    </div>
+
+    <div id="authorPanel" class="author-panel">
+
+        <h2>📚 Інформація про проєкт</h2>
+
+        <p>
+            <b>Розробила:</b><br>
+            Рибакова Альона Олексіївна
+        </p>
+
+        <p>
+            <b>Факультет:</b><br>
+            Механіко-математичний факультет
+        </p>
+
+        <p>
+            <b>Спеціальність:</b><br>
+            Статистика
+        </p>
+
+        <p>
+            <b>Курс:</b><br>
+            2 курс
+        </p>
+
+        <p>
+            <b>Опис проєкту:</b><br>
+            Даний проєкт створений для моделювання
+            роботи банку: депозитів, кредитів,
+            цінних паперів та щоденних фінансових
+            операцій.
+        </p>
+
+        <p>
+            Для більшості звичайних користувачів
+            робота через термінал є незручною,
+            тому був розроблений веб-інтерфейс
+            на HTML, CSS та JavaScript.
+        </p>
+
+        <p>
+            Веб-інтерфейс дозволяє взаємодіяти
+            з банківською системою у графічному
+            середовищі без необхідності роботи
+            через командний рядок.
+        </p>
+
+        <p>
+            Серверна частина написана мовою C++,
+            що дозволяє виконувати математичні
+            обчислення, моделювання фінансових
+            процесів та обробку банківських
+            операцій на сервері.
+        </p>
+
+    </div>
+
+    <div class="money-cat">💸🐱</div>
+</section>
+
+<div class="container">
+
+    <div class="card" id="homeSection">
+        <h2>📊 Підсумки банку</h2>
+
+        <div class="stat">
+            <span>Капітал</span>
+            <span id="capital">100000 🐟 Whiskas</span>
+        </div>
+
+        <div class="stat">
+            <span>Прибуток кредитів</span>
+            <span id="creditProfitStat">0 🐟 Whiskas</span>
+        </div>
+
+        <div class="stat">
+            <span>Витрати депозитів</span>
+            <span id="depositCostStat">0 🐟 Whiskas</span>
+        </div>
+
+        <div class="stat">
+            <span>Прибуток акцій</span>
+            <span id="stockProfitStat">0 🐟 Whiskas</span>
+        </div>
+
+        <div class="stat">
+            <span>Днів роботи</span>
+            <span id="daysStat">1</span>
+        </div>
+    </div>
+
+    <div class="card formula-card" id="formulaSection">
+        <div class="cat-box">
+            <div class="cat">🐱‍💻</div>
+            <div>
+                <h2>Як банк рахує?</h2>
+                <p>Котик-фінансист думає над прибутком банку...</p>
+            </div>
+        </div>
+
+        <div class="formula">
+            <b>Капітал банку за день:</b><br>
+            A = A + D - K + KP - DP + SP
+        </div>
+
+        <div class="formula">
+            <b>D — депозити:</b><br>
+            D = сума грошей, які клієнти принесли в банк
+        </div>
+
+        <div class="formula">
+            <b>K — кредити:</b><br>
+            K = сума грошей, які банк видав клієнтам
+        </div>
+
+        <div class="formula">
+            <b>KP — прибуток з кредитів:</b><br>
+            KP = кредити × 18% / 365
+        </div>
+
+        <div class="formula">
+            <b>DP — витрати на депозити:</b><br>
+            DP = депозити × 8% / 365
+        </div>
+
+        <div class="formula">
+            <b>SP — прибуток з акцій:</b><br>
+            SP = кількість проданих акцій × ціна акції
+        </div>
+    </div>
+
+    <div class="card" id="depositSection" style="display:none;">
+        <h2>💰 Deposits</h2>
+
+        <div class="operation">
+            <div>
+                <b>Basic Deposit</b><br>
+                8% річних<br>
+                0.67% щомісяця<br>
+                Термін: 1 рік
+            </div>
+        </div>
+
+        <div class="operation">
+            <div>
+                <b>Premium Deposit</b><br>
+                12% річних<br>
+                1% щомісяця<br>
+                Термін: 2 роки
+            </div>
+        </div>
+
+        <div class="operation">
+            <div>
+                <b>VIP Deposit</b><br>
+                15% річних<br>
+                1.25% щомісяця<br>
+                Термін: 3 роки
+            </div>
+        </div>
+    </div>
+
+    <div class="card" id="creditSection" style="display:none;">
+        <h2>💳 Credits</h2>
+
+        <div class="operation">
+            <div>
+                <b>Small Credit</b><br>
+                18% річних<br>
+                До 10 000 🐟 Whiskas
+            </div>
+        </div>
+
+        <div class="operation">
+            <div>
+                <b>Business Credit</b><br>
+                24% річних<br>
+                До 100 000 🐟 Whiskas
+            </div>
+        </div>
+    </div>
+
+    <div class="card" id="stockSection" style="display:none;">
+        <h2>📈 Stocks</h2>
+
+        <div class="operation">
+            <div>
+                <b>Apple</b><br>
+                Стабільне зростання
+            </div>
+        </div>
+
+        <div class="operation">
+            <div>
+                <b>Tesla</b><br>
+                Високий ризик
+            </div>
+        </div>
+
+        <div class="operation">
+            <div>
+                <b>Government Bonds</b><br>
+                Низький ризик
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="container" style="grid-template-columns:1fr 1fr;">
+
+    <div class="card actions">
+        <h2>Операції</h2>
+
+        <input type="number" id="amountInput" placeholder="Введіть суму">
+
+        <button onclick="addDeposit()">💰 Відкрити депозит</button>
+        <button onclick="giveCredit()">💳 Видати кредит</button>
+        <button onclick="buyStock()">📈 Купити акції</button>
+        <button onclick="sellStock()">📉 Продати акції</button>
+        <button onclick="simulateDay()">🏦 Новий день</button>
+    </div>
+
+    <div class="card">
+        <h2>Журнал банку</h2>
+        <div class="log" id="log">Банк відкрився.
+Очікуємо клієнтів...</div>
+    </div>
+
+</div>
+
+<footer>
+    Violet Bank Dashboard
+</footer>
+
+<script>
+let capital = 100000;
+let deposits = 0;
+let credits = 0;
+let stocks = 10;
+let stockPrice = 150;
+let day = 1;
+
+let totalCreditProfit = 0;
+let totalDepositCosts = 0;
+let totalStockProfit = 0;
+
+let generatedCode = "";
+let isLoggedIn = false;
+
+function update(){
+    document.getElementById("capital").innerText =
+        capital.toFixed(2) + " 🐟 Whiskas";
+
+    document.getElementById("creditProfitStat").innerText =
+        totalCreditProfit.toFixed(2) + " 🐟 Whiskas";
+
+    document.getElementById("depositCostStat").innerText =
+        totalDepositCosts.toFixed(2) + " 🐟 Whiskas";
+
+    document.getElementById("stockProfitStat").innerText =
+        totalStockProfit.toFixed(2) + " 🐟 Whiskas";
+
+    document.getElementById("daysStat").innerText = day;
+}
+
+function log(text){
+    let logBox = document.getElementById("log");
+    logBox.innerText += "\n" + text;
+    logBox.scrollTop = logBox.scrollHeight;
+}
+
+function checkLogin(){
+    if(!isLoggedIn){
+        log("🔒 Спочатку увійдіть у систему.");
+        openLogin();
+        return false;
+    }
+    return true;
+}
+
+function getInputAmount(){
+    let value = parseFloat(document.getElementById("amountInput").value);
+
+    if(isNaN(value) || value <= 0){
+        return null;
+    }
+
+    return value;
+}
+
+function addDeposit(){
+    if(!checkLogin()) return;
+
+    let amount = getInputAmount();
+
+    if(amount === null){
+        log("❌ Введіть суму.");
+        return;
+    }
+
+    deposits += amount;
+    capital += amount;
+
+    log("💰 Депозит відкрито на " + amount.toFixed(2) + " 🐟 Whiskas");
+    update();
+}
+
+function giveCredit(){
+    if(!checkLogin()) return;
+
+    let amount = getInputAmount();
+
+    if(amount === null){
+        log("❌ Введіть суму.");
+        return;
+    }
+
+    if(capital >= amount){
+        credits += amount;
+        capital -= amount;
+        log("💳 Видано кредит на " + amount.toFixed(2) + " 🐟 Whiskas");
+    } else {
+        log("❌ Недостатньо коштів.");
+    }
+
+    update();
+}
+
+function buyStock(){
+    if(!checkLogin()) return;
+
+    let count = Math.floor(Math.random() * 5) + 1;
+    let cost = count * stockPrice;
+
+    if(capital >= cost){
+        capital -= cost;
+        stocks += count;
+
+        log("📈 Куплено " + count + " акцій за " + cost.toFixed(2) + " 🐟 Whiskas");
+    } else {
+        log("❌ Недостатньо коштів для купівлі акцій.");
+    }
+
+    update();
+}
+
+function sellStock(){
+    if(!checkLogin()) return;
+
+    let count = Math.floor(Math.random() * 3) + 1;
+
+    if(stocks >= count){
+        let income = count * stockPrice;
+
+        stocks -= count;
+        capital += income;
+        totalStockProfit += income;
+
+        log("📉 Продано " + count + " акцій за " + income.toFixed(2) + " 🐟 Whiskas");
+    } else {
+        log("❌ Недостатньо акцій для продажу.");
+    }
+
+    update();
+}
+
+function simulateDay(){
+    if(!checkLogin()) return;
+
+    day++;
+
+    let creditProfit = credits * 0.18 / 365;
+    let depositCost = deposits * 0.08 / 365;
+
+    stockPrice *= 1 + ((Math.random() * 0.05) - 0.015);
+
+    capital = capital + creditProfit - depositCost;
+
+    totalCreditProfit += creditProfit;
+    totalDepositCosts += depositCost;
+
+    log("🏦 День " + day +
+        "\n+ Прибуток кредитів: " + creditProfit.toFixed(2) + " 🐟 Whiskas" +
+        "\n- Витрати депозитів: " + depositCost.toFixed(2) + " 🐟 Whiskas" +
+        "\n📈 Ціна акцій: " + stockPrice.toFixed(2) + " 🐟 Whiskas");
+
+    update();
+}
+
+function openLogin(){
+    generatedCode =
+        Math.floor(1000 + Math.random() * 9000).toString();
+
+    alert("Verification code: " + generatedCode);
+
+    document.getElementById("loginModal").style.display = "flex";
+}
+
+function closeLogin(){
+    document.getElementById("loginModal").style.display = "none";
+}
+
+function registerUser(){
+    let username = document.getElementById("loginName").value;
+    let password = document.getElementById("loginPassword").value;
+    let code = document.getElementById("verifyCode").value;
+
+    if(username === "" || password === "" || code === ""){
+        document.getElementById("loginStatus").innerText =
+            "❌ Заповніть усі поля.";
+        return;
+    }
+
+    if(code !== generatedCode){
+        document.getElementById("loginStatus").innerText =
+            "❌ Wrong verification code";
+        return;
+    }
+
+    localStorage.setItem("bank_username", username);
+    localStorage.setItem("bank_password", password);
+
+    document.getElementById("loginStatus").innerText =
+        "✅ Registration successful";
+
+    log("📝 Новий користувач: " + username);
+}
+
+function loginUser(){
+    let username = document.getElementById("loginName").value;
+    let password = document.getElementById("loginPassword").value;
+
+    let savedUser = localStorage.getItem("bank_username");
+    let savedPassword = localStorage.getItem("bank_password");
+
+    if(username === savedUser && password === savedPassword){
+        isLoggedIn = true;
+
+        document.getElementById("loginStatus").innerText =
+            "✅ Login successful";
+
+        log("🔐 Користувач увійшов: " + username);
+
+        setTimeout(function(){
+            closeLogin();
+        }, 1000);
+    } else {
+        document.getElementById("loginStatus").innerText =
+            "❌ Wrong username or password";
+    }
+}
+
+function showSection(section){
+    document.getElementById("homeSection").style.display = "none";
+    document.getElementById("formulaSection").style.display = "none";
+    document.getElementById("depositSection").style.display = "none";
+    document.getElementById("creditSection").style.display = "none";
+    document.getElementById("stockSection").style.display = "none";
+
+    if(section === "home"){
+        document.getElementById("homeSection").style.display = "block";
+        document.getElementById("formulaSection").style.display = "block";
+    }
+
+    if(section === "deposits"){
+        document.getElementById("depositSection").style.display = "block";
+        document.getElementById("formulaSection").style.display = "block";
+    }
+
+    if(section === "credits"){
+        document.getElementById("creditSection").style.display = "block";
+        document.getElementById("formulaSection").style.display = "block";
+    }
+
+    if(section === "stocks"){
+        document.getElementById("stockSection").style.display = "block";
+        document.getElementById("formulaSection").style.display = "block";
+    }
+}
+
+function toggleAuthorInfo(){
+    let panel = document.getElementById("authorPanel");
+    panel.classList.toggle("active");
+}
+
+window.onclick = function(event){
+    let modal = document.getElementById("loginModal");
+
+    if(event.target === modal){
+        closeLogin();
+    }
+}
+
+update();
+</script>
+
+</body>
+</html>

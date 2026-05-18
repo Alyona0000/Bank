@@ -52,10 +52,16 @@ public:
 
     void addDeposit(const Deposit& deposit) {
         deposits.push_back(deposit);
+        capital += deposit.getAmount();
+        totalDeposits += deposit.getAmount();
     }
 
     void addCredit(const Credit& credit) {
-        credits.push_back(credit);
+        if (capital >= credit.getAmount()) {
+            credits.push_back(credit);
+            capital -= credit.getAmount();
+            totalCredits += credit.getAmount();
+        }
     }
 
     void addSecurity(const Security& security) {

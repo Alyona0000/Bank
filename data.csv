@@ -1,9 +1,0 @@
-type,userId,name,startDay,endDay,amount,interest,securityName,securityType,price,quantity,growth
-user,1,Anna,,,,,,,,,
-user,2,Oleh,,,,,,,,,
-user,3,Maria,,,,,,,,,
-deposit,1,,1,365,10000,0.08,,,,,
-deposit,2,,10,200,7000,0.07,,,,,
-credit,3,,5,300,15000,0.18,,,,,
-security,,, , , , ,Apple,Stock,150,10,0.12
-security,,, , , , ,Tesla,Stock,220,5,0.15
