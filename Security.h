@@ -3,25 +3,23 @@
 
 #include <string>
 
-using namespace std;
-
 class Security {
 private:
-    string name;
-    string type;
+    std::string name;
+    std::string type;
     double price;
     int quantity;
     double yearlyGrowth;
 
 public:
-    Security(string name = "",
-             string type = "",
+    Security(const std::string& name = "",
+             const std::string& type = "",
              double price = 0,
              int quantity = 0,
              double yearlyGrowth = 0);
 
-    string getName() const;
-    string getType() const;
+    std::string getName() const;
+    std::string getType() const;
 
     double getPrice() const;
     int getQuantity() const;

@@ -1,10 +1,9 @@
 #include "Security.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
 
-using namespace std;
-
-Security::Security(string name, string type, double price,
+Security::Security(const std::string& name, const std::string& type, double price,
                    int quantity, double yearlyGrowth) {
     this->name = name;
     this->type = type;
@@ -13,11 +12,11 @@ Security::Security(string name, string type, double price,
     this->yearlyGrowth = yearlyGrowth;
 }
 
-string Security::getName() const {
+std::string Security::getName() const {
     return name;
 }
 
-string Security::getType() const {
+std::string Security::getType() const {
     return type;
 }
 

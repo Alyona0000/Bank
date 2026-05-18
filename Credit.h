@@ -1,7 +1,7 @@
-#ifndef DEPOSIT_H
-#define DEPOSIT_H
+#ifndef CREDIT_H
+#define CREDIT_H
 
-class Deposit {
+class Credit {
 private:
     int userId;
     int startDay;
@@ -10,8 +10,8 @@ private:
     double interest;
 
 public:
-    Deposit(int userId = 0, int startDay = 0, int endDay = 0,
-            double amount = 0, double interest = 0);
+    Credit(int userId = 0, int startDay = 0, int endDay = 0,
+           double amount = 0, double interest = 0);
 
     int getUserId() const;
     int getStartDay() const;
@@ -19,7 +19,7 @@ public:
     double getAmount() const;
     double getInterest() const;
 
-    double dailyCost() const;
+    double dailyProfit() const;
     void show() const;
 };
 
