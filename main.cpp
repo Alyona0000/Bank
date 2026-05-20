@@ -1,6 +1,11 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <cstdint>
+#ifdef _WIN32
+#include <winsock2.h>
+#include <windows.h>
+#endif
 
 #include "httplib.h"
 #include "Bank.h"
@@ -26,6 +31,10 @@ int main() {
     httplib::Server server;
 
     server.Get("/", [](const httplib::Request&, httplib::Response& res) {
+        res.set_file_content("index.html", "text/html; charset=UTF-8");
+    });
+
+    server.Get("/index.html", [](const httplib::Request&, httplib::Response& res) {
         res.set_file_content("index.html", "text/html; charset=UTF-8");
     });
 
@@ -60,8 +69,21 @@ int main() {
         res.set_content(bank.toJson(), "application/json");
     });
 
-    std::cout << "Server started: http://localhost:8080\n";
-    server.listen("localhost", 8080);
+    std::cout << "Server starting on http://localhost:9090\n";
+#ifdef _WIN32
+    HINSTANCE browserResult = ShellExecuteA(NULL, "open", "http://localhost:9090", NULL, NULL, SW_SHOWNORMAL);
+    if (reinterpret_cast<intptr_t>(browserResult) <= 32) {
+        std::cerr << "WARNING: не удалось автоматически открыть браузер. Откройте http://localhost:9090 вручную.\n";
+    }
+#endif
+    std::cout << std::flush;
+
+    bool listen_result = server.listen("localhost", 9090);
+
+    if (!listen_result) {
+        std::cerr << "ERROR: failed to start server on localhost:9090\n";
+        return 1;
+    }
 
     return 0;
 }

@@ -588,6 +588,8 @@ let totalStockProfit = 0;
 let generatedCode = "";
 let isLoggedIn = false;
 
+const API_BASE = window.location.protocol === "file:" ? "http://localhost:9090" : "";
+
 function money(value){
     return value.toFixed(2) + " 🐟 Whiskas";
 }
@@ -611,13 +613,23 @@ function applyServerData(data){
 }
 
 async function sendRequest(url, body = ""){
-    let response = await fetch(url, {
-        method: "POST",
-        body: body.toString()
-    });
+    try {
+        let response = await fetch(API_BASE + url, {
+            method: "POST",
+            body: body.toString()
+        });
 
-    let data = await response.json();
-    applyServerData(data);
+        if (!response.ok) {
+            log(`❌ Сервер повернув помилку ${response.status}`);
+            return;
+        }
+
+        let data = await response.json();
+        applyServerData(data);
+    } catch (error) {
+        log("❌ Не вдалося з'єднатися з сервером. Запустіть bank_server.exe і відкрийте сайт через http://localhost:9090");
+        console.error(error);
+    }
 }
 
 function log(text){
